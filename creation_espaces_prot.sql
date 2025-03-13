@@ -29,9 +29,9 @@ BEGIN
     END LOOP;
 END $$;
 
--- Création de la table espaces_proteges50bis avec découpage sur le département de la Manche
-DROP TABLE IF EXISTS espaces_proteges50bis;
-CREATE TABLE espaces_proteges50bis AS
+-- Création de la table espaces_proteges50 avec découpage sur le département de la Manche
+DROP TABLE IF EXISTS espaces_proteges50;
+CREATE TABLE espaces_proteges50 AS
 SELECT 
     e.id, 
     ST_Intersection(e.geom, m.geom) AS geom,  -- Découpage des espaces protégés selon la Manche
