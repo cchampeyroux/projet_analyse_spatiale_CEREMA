@@ -7,17 +7,17 @@
 
 ## 1. Sélection des discontinuités dans les haies
 #### Données utilisées pour cette étape
-* Les données sur les haies utilisées pour notre étude sont celles de la version 2 de la BD
-haies l’IGN. Il s’agit de la couche nationale de référence des haies linéaires en France
+* Les données sur les haies utilisées pour notre étude sont celles de la version 2 de la [BD
+HAIE](https://geoservices.ign.fr/bdhaie) l’IGN. Il s’agit de la couche nationale de référence des haies linéaires en France
 métropolitaine. La version utilisée a été mis à jour en mars 2024 et réalisée à partir de
 photo-interprétées d’images aériennes et de modèles numériques de surface datant de
 2020 à 2022. Ces données sont disponibles au format geopackage en projection 2154.
-* Les données sur les parcelles sont issues du Registre Parcellaire Graphique (RPG). Il
+* Les données sur les parcelles sont issues du Registre Parcellaire Graphique ([RPG](https://geoservices.ign.fr/rpg)). Il
 s’agit des parcelles de la version du RPG normand de 2023 au format shapefile.
-* Les données sur les routes sont issues de la BDCARTO. IL s’agit des tronçons de route
+* Les données sur les routes sont issues de la [BDCARTO](https://geoservices.ign.fr/bdcarto). IL s’agit des tronçons de route
 du département de la Manche mis à jour au mois de septembre 2024. Ces données sont
 disponibles au format vectoriel en projection 2154.
-* Les données sur les routes départementales ont été fournies par notre commanditaire de projet, Florian Grillot.
+* Les données sur les routes départementales ont été fournies par notre commanditaire de projet, Florian Grillot, et s'apparentent, malgré des différences mineures, à la [BDCARTO](https://geoservices.ign.fr/bdcarto).
 ### Récupération des haies situées à une distance de 20 mètres autour des routes
 On utilise la requête SQL :
 ```
