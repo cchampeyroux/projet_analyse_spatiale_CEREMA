@@ -1,13 +1,13 @@
 
 
 ---Attribution d'une pondération à chaque type d'espace
-CREATE TABLE prioritesbis (
+CREATE TABLE priorites (
     type VARCHAR,
     importance INTEGER
 );
 
 
-INSERT INTO prioritesbis (type, importance) VALUES
+INSERT INTO priorites (type, importance) VALUES
 ('rncfs', 10),
 ('rnn', 10),
 ('rnr', 10),
@@ -29,15 +29,15 @@ INSERT INTO prioritesbis (type, importance) VALUES
 
 
 ---Jointure des couches avec leurs scores pour avoir la geometrie et la pondération dans espaces pondérés
-DROP TABLE if exists espaces_ponderebis;
+DROP TABLE if exists espaces_pondere;
 SELECT 
     e.id AS espace_id,
     p.importance,
 	e.type,
     e.geom
-INTO espaces_ponderebis
-FROM espaces_proteges50bis e
-JOIN prioritesbis p ON e.type = p.type;
+INTO espaces_pondere
+FROM espaces_proteges50 e
+JOIN priorites p ON e.type = p.type;
 
 ---Decouper pour garder ceux dans la manche
 
