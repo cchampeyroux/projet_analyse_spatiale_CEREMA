@@ -1,13 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Mar  7 18:37:58 2025
-
-@author: formation
-"""
-
-
-
 import os
 import geopandas as gpd
 import rasterio
@@ -18,9 +8,9 @@ from tqdm import tqdm
 from rtree import index  # Utilisation d'un index spatial pour accélérer les intersections
 
 # Chemins des fichiers
-dossier_flux = "/media/formation/T7 Shield/ENSG/IGAST/Haies/flux_trie"  # Nouveau dossier contenant les fichiers TIFF
-fichier_trous = "/media/formation/JEANNE/trou_5m_parcelles/trou_5m_sans_route_et_parcelle.shp"
-fichier_sortie = "/media/formation/JEANNE/trou_intersecte_flux_attribut_plus_haut_pixel/trous_intersecte_flux.shp"
+dossier_flux = "accumulation_flux"  # Dossier contenant les fichiers TIFF
+fichier_trous = "trou_5m_sans_route_et_parcelle.shp"
+fichier_sortie = "trous_intersecte_flux.shp"
 
 # Charger les trous et créer un index spatial
 trous = gpd.read_file(fichier_trous)
@@ -40,7 +30,7 @@ def traiter_tiff(chemin_tiff):
     geometries_valides = {}
 
     with rasterio.open(chemin_tiff) as src:
-        bounds = src.bounds  # 🔍 Récupérer les limites du raster
+        bounds = src.bounds  # Récupérer les limites du raster
         
         # Sélectionner uniquement les trous qui intersectent ce raster
         indices_potentiels = list(spatial_index.intersection((bounds.left, bounds.bottom, bounds.right, bounds.top)))
