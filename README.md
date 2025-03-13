@@ -1,4 +1,4 @@
-# projet_analyse_spatiale_CEREMA
+# Projet Analyse Spatiale CEREMA
 
 **Etapes du traitement :**  
 1. Détecter les discontinuités le long des routes  
