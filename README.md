@@ -19,3 +19,30 @@ CREATE TABLE buffer_haie AS (
 );
 ```
 et à la fonction ***Couper avec des lignes*** de QGIS avec les zones tampon en couche source et les routes départementales non découpées en couche de découpage.
+
+
+
+
+
+
+
+
+
+
+
+# 2. Hiérarchisation des zones avec les espaces protégés et réservoirs de biodiversité
+
+Reprojection et harmonisation des couches d'espaces protégés en 2154 pour rendre les données homogènes.
+- **`creation_espaces_prot.sql`** : Regroupe l’ensemble des espaces protégés dans une même couche, en précisant leur type en attribut, et effectue un découpage par le département de la Manche.  
+- **`importance.sql`** : Associe une valeur d’importance aux espaces protégés.  
+- **`réservoirs.sql`** : Crée une nouvelle couche combinant les espaces protégés et les réservoirs, en leur attribuant une valeur d’importance sur 10.  
+- **`associe_importance_trous.sql`** : Affecte aux discontinuités de haies la valeur maximale d’importance, en fonction de l’espace protégé ou du réservoir dans lequel elles se trouvent. 
+
+# 3.Étude sur les pentes des terrains agricoles en bordure de route
+
+
+# 4. Identification des zones prioritaires pour la plantation de haies avec les critères écologiques et hydrologiques
+
+- Jointure des couches de bords de route sans haie avec les données d'importance de zones protégées et les données de ruissellement créant la couche "trou_flux_et_proteges".
+- Normalisation des indices d'importance écologique (attribut : "importance") et d'écoulement (attribut : "ecoulement"), donne les résultats dans l'attribut : "norm_prot" et "norm_ecoul"
+- Pondération pour créer un indice global de priorité : Priorité = (écoulement normalisé × 0.5) + (importance espaces normalisée × 0.5), attribut : "param50_50"
