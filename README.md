@@ -14,10 +14,8 @@ photo-interprétées d’images aériennes et de modèles numériques de surface
 2020 à 2022. Ces données sont disponibles au format geopackage en projection 2154.
 * Les données sur les parcelles sont issues du Registre Parcellaire Graphique ([RPG](https://geoservices.ign.fr/rpg)). Il
 s’agit des parcelles de la version du RPG normand de 2023 au format shapefile.
-* Les données sur les routes sont issues de la [BDCARTO](https://geoservices.ign.fr/bdcarto). IL s’agit des tronçons de route
-du département de la Manche mis à jour au mois de septembre 2024. Ces données sont
-disponibles au format vectoriel en projection 2154.
-* Les données sur les routes départementales ont été fournies par notre commanditaire de projet, Florian Grillot, et s'apparentent, malgré des différences mineures, à la [BDCARTO](https://geoservices.ign.fr/bdcarto).
+* Les données sur les routes sont issues de la couche **tronçons de route** de la [BDCARTO](https://geoservices.ign.fr/bdcarto) dont la valeur d'importance est différente de 3. IL s’agit des tronçons de route du département de la Manche mis à jour au mois de septembre 2024. Ces données sont disponibles au format vectoriel en projection 2154.
+* Les données sur les routes départementales ont été fournies par notre commanditaire de projet, Florian Grillot, et s'apparentent, malgré des différences mineures, à la couche des **tronçons de route** de la [BDCARTO](https://geoservices.ign.fr/bdcarto) dont la valeur d'importance est 3.
 ### Récupération des haies situées à une distance de 20 mètres autour des routes
 On utilise la requête SQL :
 ```
