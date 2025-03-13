@@ -81,13 +81,22 @@ CREATE TABLE trou_5m_sans_route AS (
 ### Identification des discontinuités en bordure de parcelles agricoles
 On utilise le RPG. Pour cette étape, on ne prend pas en compte les parcelles agricoles couvertes par des prairies permanentes, des prairies temporaires, des estives et landes, des vergers ou du gel ne sont pas prises en compte, selon la demande du commanditaire, en raison du plus faible ruissellement sur ces parcelles. Les traitements suivants se feront alors sur les parcelles non visées par ces catégories :
 ```
+create table parcelle_manche_reduite as (
+	select * from parcelle_manche
+	where code_group != '11'
+	and code_group != '17'
+	and code_group != '18'
+	and code_group != '19'
+	and code_group != '20'
+);
+
 CREATE TABLE trou_5m_sans_route_et_parcelles AS (
     SELECT s.*
     FROM trou_5m_sans_route AS s
     JOIN (
         SELECT s.geom AS s_geom, ST_Area(ST_Union(ST_Intersection(ST_Buffer(p.geom, 0), ST_Buffer(s.geom, 0)))) AS inter_area
         FROM trou_5m_sans_route s
-        JOIN parcelle_manche p ON ST_DWithin(p.geom, s.geom, 0.1)
+        JOIN parcelle_manche_reduite p ON ST_DWithin(p.geom, s.geom, 0.1)
         WHERE ST_IsValid(s.geom) AND ST_IsValid(p.geom)
         GROUP BY s.geom
     ) AS inter ON inter.s_geom = s.geom
