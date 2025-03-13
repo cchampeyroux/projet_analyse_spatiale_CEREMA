@@ -19,10 +19,10 @@ s’agit des parcelles de la version du RPG normand de 2023 au format shapefile.
 ### Récupération des haies situées à une distance de 20 mètres autour des routes
 On utilise la requête SQL :
 ```
-CREATE TABLE haie_route20_coupe AS (
-    SELECT ST_Intersection(h.geom, ST_Buffer(r.geom, 20))
-    FROM haie AS h, cd50
-);
+CREATE TABLE haie_route20_coupe AS 
+    SELECT ST_Intersection(h.geom, ST_Buffer(r.geom, 20)) AS geom
+    FROM haie h
+    JOIN cd50 r ON ST_Intersects(h.geom, ST_Buffer(r.geom, 20));
 ```
 
 ### Découpage des routes en segments de 5 mètres
