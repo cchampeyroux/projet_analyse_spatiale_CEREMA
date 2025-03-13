@@ -114,12 +114,12 @@ Reprojection et harmonisation des couches d'espaces protégés en 2154 pour rend
 
 ### Calcul de l'indice d'accumulation grâce au MNT
 
-L'indice utilisé pour évaluer l'exposition des routes au ruissellement est l'accumulation de flux calculé par le SIG Grass. Pour ce faire, on lance dans le logiciel le code **'analyse_mnt_flux.py'**.
+L'indice utilisé pour évaluer l'exposition des routes au ruissellement est l'accumulation de flux calculé par le SIG Grass. Pour ce faire, on lance dans le logiciel le code **`analyse_mnt_flux.py`**.
 Celui-ci prend en entrée le dossier contenant toutes les dalles de MNT au format ASC, et crée pour chacune un fichier TIFF dans un dossier en sortie.
 
 ### Attribution d'un indicateur d'importance aux trous de la couche des discontinuités
 
-Cette dernière étape est effectuée par le code **'classif_trous_ruissellement.py'**, qui prend en entrée :
+Cette dernière étape est effectuée par le code **`classif_trous_ruissellement.py`**, qui prend en entrée :
 * La couche des discontinuités
 * Le dossier créé à l'étape précédente contenant les fichiers TIFF de l'accumulation d'eau
 
