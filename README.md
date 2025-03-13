@@ -123,7 +123,7 @@ Cette dernière étape est effectuée par le code **`classif_trous_ruissellement
 * La couche des discontinuités
 * Le dossier créé à l'étape précédente contenant les fichiers TIFF de l'accumulation d'eau
 
-Il crée alors un fichier au format Shapefile contenant pour chaque discontinuité son identifiant et la valeur d'accumulation la plus haute qu'elle intesecte, arrondie à la dixaine inférieure.
+Il crée alors un fichier au format Shapefile contenant pour chaque discontinuité son identifiant et la valeur d'accumulation la plus haute qu'elle intersecte, arrondie à la dixaine inférieure.
 
 
 ## 4. Identification des zones prioritaires pour la plantation de haies avec les critères écologiques et hydrologiques
