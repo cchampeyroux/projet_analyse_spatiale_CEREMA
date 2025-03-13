@@ -16,6 +16,7 @@ photo-interprétées d’images aériennes et de modèles numériques de surface
 s’agit des parcelles de la version du RPG normand de 2023 au format shapefile.
 * Les données sur les routes sont issues de la couche **tronçons de route** de la [BDCARTO](https://geoservices.ign.fr/bdcarto) dont la valeur d'importance est différente de 3. IL s’agit des tronçons de route du département de la Manche mis à jour au mois de septembre 2024. Ces données sont disponibles au format vectoriel en projection 2154.
 * Les données sur les routes départementales ont été fournies par notre commanditaire de projet, Florian Grillot, et s'apparentent, malgré des différences mineures, à la couche des **tronçons de route** de la [BDCARTO](https://geoservices.ign.fr/bdcarto) dont la valeur d'importance est 3.
+* Les données sur les coutours du département de la Manche ont été fournies par la couche DEPARTEMENT de la BDCARTO.
 ### Récupération des haies situées à une distance de 20 mètres autour des routes
 On utilise la requête SQL :
 ```
@@ -81,13 +82,24 @@ CREATE TABLE trou_5m_sans_route AS (
 ### Identification des discontinuités en bordure de parcelles agricoles
 On utilise le RPG. Pour cette étape, on ne prend pas en compte les parcelles agricoles couvertes par des prairies permanentes, des prairies temporaires, des estives et landes, des vergers ou du gel ne sont pas prises en compte, selon la demande du commanditaire, en raison du plus faible ruissellement sur ces parcelles. Les traitements suivants se feront alors sur les parcelles non visées par ces catégories :
 ```
-create table parcelle_manche_reduite as (
-	select * from parcelle_manche
-	where code_group != '11'
-	and code_group != '17'
-	and code_group != '18'
-	and code_group != '19'
-	and code_group != '20'
+CREATE TABLE departement_manche AS (
+	SELECT * FROM departement
+	WHERE insee_dep = '50'
+);
+
+CREATE TABLE parcelle_mache AS (
+	SELECT p.* 
+	FROM parcelle p
+	JOIN departement_mache d ON ST_Intersects(p.geom, d.geom)
+);
+
+CREATE TABLE parcelle_manche_reduite AS (
+	SELECT * from parcelle_manche
+	WHERE code_group != '11'
+	AND code_group != '17'
+	AND code_group != '18'
+	AND code_group != '19'
+	AND code_group != '20'
 );
 
 CREATE TABLE trou_5m_sans_route_et_parcelles AS (
