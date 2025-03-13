@@ -40,6 +40,9 @@ Reprojection et harmonisation des couches d'espaces protégés en 2154 pour rend
 
 ## 3. Étude sur les pentes des terrains agricoles en bordure de route
 
+### Calcul de l'indice d'accumulation grâce au MNT
+
+### Ajout d'un attribut d'importance des haies à la couche de trous
 
 ## 4. Identification des zones prioritaires pour la plantation de haies avec les critères écologiques et hydrologiques
 
