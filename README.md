@@ -104,7 +104,13 @@ Ces étapes sont illustrée dans le workflow suivant :
 
 ## 2. Hiérarchisation des zones avec les espaces protégés et réservoirs de biodiversité
 
-Reprojection et harmonisation des couches d'espaces protégés en 2154 pour rendre les données homogènes.
+### Données utilisées pour cette étape
+
+Les données sur les espaces protégés proviennent de l'Inventaire National du Patrimoine Naturel, [INPN](https://inpn.mnhn.fr/telechargement/cartes-et-information-geographique) où les fichiers sont téléchargeables au format shapefile et mis à jour entre 2022 et 2025 selon les types d'espaces. Les données concernant les réservoirs de biodiversité ont été transmises par le CEREMA.
+
+### Etapes pour la hiérarchisaion des espaces protégés et réservoirs de biodiversité
+
+- Reprojection et harmonisation des couches d'espaces protégés en 2154 pour rendre les données homogènes.
 - **`creation_espaces_prot.sql`** : Regroupe l’ensemble des espaces protégés dans une même couche, en précisant leur type en attribut, et effectue un découpage par le département de la Manche.  
 - **`importance.sql`** : Associe une valeur d’importance aux espaces protégés.  
 - **`réservoirs.sql`** : Crée une nouvelle couche combinant les espaces protégés et les réservoirs, en leur attribuant une valeur d’importance sur 10.  
