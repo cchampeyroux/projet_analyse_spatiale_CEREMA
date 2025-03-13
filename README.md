@@ -12,7 +12,7 @@ On utilise la requête SQL :
 CREATE TABLE haie_route20_coupe AS (
     SELECT ST_Intersection(h.geom, ST_Buffer(r.geom, 20))
     FROM haie AS h, cd50
-)
+);
 ```
 
 ### Découpage des routes en segments de 5 mètres
@@ -46,6 +46,27 @@ CREATE TABLE segment_trou AS (
 );
 ```
 
+### Suppression des segments qui intersectent des routes non départementales
+Pour ne pas indiquer des zones de plantation au niveau de routes, on applique le code suivant aux discontinuités :
+```
+CREATE TABLE non_dep AS (
+    SELECT r.*
+    FROM all_roads_bdcarto r
+    WHERE r.cpx_classement_administratif != 'Départementale' 
+       OR r.cpx_classement_administratif IS NULL
+);
+
+CREATE TABLE trou_5m_sans_route AS (
+    SELECT s.*
+    FROM segment_trou_5m s
+    WHERE NOT EXISTS (
+        SELECT 1 
+        FROM non_dep n
+        WHERE ST_DWithin(n.geom, s.geom, 0.1) -- Réduit le nombre de tests
+        AND ST_Length(ST_Intersection(n.geom, s.geom)) > 2 -- Vérifie l'intersection réelle
+    )
+);
+```
 
 
 
