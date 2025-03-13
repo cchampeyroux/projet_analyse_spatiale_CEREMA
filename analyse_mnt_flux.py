@@ -1,65 +1,66 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Mar 13 12:00:43 2025
-
-@author: Formation
-"""
-
-
 import os
 import subprocess
 import grass.script as gs
 
-# Définir le chemin vers les tuiles MNT
-mnt_path = r"C:\Users\bouna\Desktop\Etudes\ING3\Projet_Analyse_Spatiale\ruissellement\avec1image\RGEALTI_FXX_0388_6905_MNT_LAMB93_IGN69.asc"
-output_folder = r"C:\Users\bouna\Desktop\Etudes\ING3\Projet_Analyse_Spatiale\ruissellement\avec1image\flux"
+# Définir le dossier contenant les tuiles MNT et celui contenant les résultats
+mnt_folder = r"chemin\dossier\dalles\mnt"
+output_folder = r"chemin\dossier\sortie\accumulation"
 
-print("Traitement de la tuile")
+print("Traitement des tuiles du dossier...")
 
-# Vérifier si le fichier a une projection définie
-print("Vérification de la projection du fichier MNT...")
-cmd_gdalinfo = ["gdalinfo", mnt_path]
-process = subprocess.run(cmd_gdalinfo, capture_output=True, text=True)
+# Lister tous les fichiers .asc du dossier
+mnt_files = [f for f in os.listdir(mnt_folder) if f.endswith(".asc")]
 
-if "No SRS" in process.stdout or "Unknown projection" in process.stdout:
-    print("Aucune projection trouvée, assignation de EPSG:2154...")
-    subprocess.run(["gdal_edit.py", "-a_srs", "EPSG:2154", mnt_path])
-else:
-    print("Projection détectée, aucune modification nécessaire.")
+for mnt_file in mnt_files:
+    mnt_path = os.path.join(mnt_folder, mnt_file)
+    print(f"Traitement de la tuile : {mnt_file}")
 
-# Vérifier la projection actuelle de la location GRASS
-print("Projection actuelle de la location GRASS :")
-gs.run_command("g.proj", flags="p")
+    # Vérifier si le fichier a une projection définie
+    print("Vérification de la projection du fichier MNT...")
+    cmd_gdalinfo = ["gdalinfo", mnt_path]
+    process = subprocess.run(cmd_gdalinfo, capture_output=True, text=True)
 
-# Importation de la tuile dans GRASS
-mnt_raster_name = "mnt_tmp"  # Nom temporaire pour éviter les conflits
-gs.run_command("r.in.gdal", input=mnt_path, output=mnt_raster_name, overwrite=True, flags="o")
+    if "No SRS" in process.stdout or "Unknown projection" in process.stdout:
+        print("Aucune projection trouvée, assignation de EPSG:2154...")
+        subprocess.run(["gdal_edit.py", "-a_srs", "EPSG:2154", mnt_path])
+    else:
+        print("Projection détectée, aucune modification nécessaire.")
 
-# Fixer la région sur le raster importé
-gs.run_command("g.region", raster=mnt_raster_name)
+    # Vérifier la projection actuelle de la location GRASS
+    print("Projection actuelle de la location GRASS :")
+    gs.run_command("g.proj", flags="p")
 
-# Vérification des données importées
-print("Statistiques de la tuile:")
-gs.run_command("r.stats", flags="n", input=mnt_raster_name)
-gs.run_command("r.info", map=mnt_raster_name)  # Vérification des informations sur le raster
+    # Importation de la tuile dans GRASS
+    mnt_raster_name = os.path.splitext(mnt_file)[0]  # Nom basé sur le fichier
+    gs.run_command("r.in.gdal", input=mnt_path, output=mnt_raster_name, overwrite=True, flags="o")
 
-# Exécution de r.flow pour récupérer l'accumulation
-flow_accum_raster_name = "flow_accum_tmp"
-gs.run_command("r.flow", elevation=mnt_raster_name, flowaccumulation=flow_accum_raster_name, overwrite=True)
+    # Fixer la région sur le raster importé
+    gs.run_command("g.region", raster=mnt_raster_name)
 
-# Vérification de l'accumulation de flux
-gs.run_command("r.stats", flags="n", input=flow_accum_raster_name)
+    # Vérification des données importées
+    print("Statistiques de la tuile:")
+    gs.run_command("r.stats", flags="n", input=mnt_raster_name)
+    gs.run_command("r.info", map=mnt_raster_name)  # Vérification des informations sur le raster
 
-# Exportation du résultat
-output_path = os.path.join(output_folder, "flow_acc_RGEALTI_FXX_0388_6905_MNT_LAMB93_IGN69.asc")
-gs.run_command("r.out.gdal", input=flow_accum_raster_name, output=output_path,
-               format="GTiff", type="Float64", overwrite=True)
+    # Exécution de r.flow pour récupérer l'accumulation
+    flow_accum_raster_name = f"flow_accum_{mnt_raster_name}"
+    gs.run_command("r.flow", elevation=mnt_raster_name, flowaccumulation=flow_accum_raster_name, overwrite=True)
 
-# Nettoyage des données temporaires
-gs.run_command("g.remove", type="raster", name=mnt_raster_name, flags="f")
-gs.run_command("g.remove", type="raster", name=flow_accum_raster_name, flags="f")
+    # Vérification de l'accumulation de flux
+    gs.run_command("r.stats", flags="n", input=flow_accum_raster_name)
 
-# Vérifier la liste des rasters
+    # Exportation du résultat
+    output_path = os.path.join(output_folder, f"flow_acc_{mnt_raster_name}.asc")
+    gs.run_command("r.out.gdal", input=flow_accum_raster_name, output=output_path,
+                   format="GTiff", type="Float64", overwrite=True)
+
+    # Nettoyage des données temporaires
+    gs.run_command("g.remove", type="raster", name=mnt_raster_name, flags="f")
+    gs.run_command("g.remove", type="raster", name=flow_accum_raster_name, flags="f")
+
+    print(f"Traitement terminé pour {mnt_file} !")
+
+# Vérifier la liste des rasters restants
 gs.run_command("g.list", type="raster")
 
-print("Traitement terminé !")
+print("Traitement de toutes les tuiles terminé !")
