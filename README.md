@@ -42,6 +42,9 @@ Reprojection et harmonisation des couches d'espaces protégés en 2154 pour rend
 
 ### Calcul de l'indice d'accumulation grâce au MNT
 
+L'indice utilisé pour évaluer l'exposition des routes au ruissellement est l'accumulation de flux calculé par le SIG Grass. Pour ce faire, on lance dans le logiciel le code analyse_mnt_flux.py. *
+
+
 ### Ajout d'un attribut d'importance des haies à la couche de trous
 
 ## 4. Identification des zones prioritaires pour la plantation de haies avec les critères écologiques et hydrologiques
