@@ -97,6 +97,10 @@ CREATE TABLE trou_5m_sans_route_et_parcelles AS (
 );
 ```
 
+Ces étapes sont illustrée dans le workflow suivant :  
+\
+![alt](workflow_haies.png)
+
 
 ## 2. Hiérarchisation des zones avec les espaces protégés et réservoirs de biodiversité
 
