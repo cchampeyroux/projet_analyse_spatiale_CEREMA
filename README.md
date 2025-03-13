@@ -38,7 +38,7 @@ Reprojection et harmonisation des couches d'espaces protégés en 2154 pour rend
 - **`réservoirs.sql`** : Crée une nouvelle couche combinant les espaces protégés et les réservoirs, en leur attribuant une valeur d’importance sur 10.  
 - **`associe_importance_trous.sql`** : Affecte aux discontinuités de haies la valeur maximale d’importance, en fonction de l’espace protégé ou du réservoir dans lequel elles se trouvent. 
 
-## 3.Étude sur les pentes des terrains agricoles en bordure de route
+## 3. Étude sur les pentes des terrains agricoles en bordure de route
 
 
 ## 4. Identification des zones prioritaires pour la plantation de haies avec les critères écologiques et hydrologiques
