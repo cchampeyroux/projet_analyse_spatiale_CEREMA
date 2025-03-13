@@ -116,6 +116,7 @@ Reprojection et harmonisation des couches d'espaces protégés en 2154 pour rend
 
 L'indice utilisé pour évaluer l'exposition des routes au ruissellement est l'accumulation de flux calculé par le SIG Grass. Pour ce faire, on lance dans le logiciel le code **`analyse_mnt_flux.py`**.
 Celui-ci prend en entrée le dossier contenant toutes les dalles de MNT au format ASC, et crée pour chacune un fichier TIFF dans un dossier en sortie.
+Les données utilisées durant ce projet ont été récupérées sur le site de [Géoservices](https://geoservices.ign.fr/rgealti)
 
 ### Attribution d'un indicateur d'importance aux trous de la couche des discontinuités
 
