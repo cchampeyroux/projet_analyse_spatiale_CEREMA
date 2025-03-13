@@ -7,11 +7,11 @@ CREATE TABLE reservoirs(
     importance INTEGER
 );
 
-
+---Convertir la couche lineaire des cours d'eau en polygone
 CREATE TABLE reservoir_cours_eau_polygone AS
 SELECT 
     ce.id, 
-    ST_Multi(ST_Buffer(ce.geom, 5)) AS geom, -- Ajuste la valeur du buffer selon tes besoins
+    ST_Multi(ST_Buffer(ce.geom, 5)) AS geom, 
     'cours_eau' AS type, 
     10 AS importance
 FROM reservoirs_courseau as ce
