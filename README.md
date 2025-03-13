@@ -6,6 +6,15 @@
 3. Hiérarchiser en fonction des pentes (ruissellement)
 
 ## 1. Sélection des discontinuités dans les haies
+### Récupération des haies situées à une distance de 20 mètres autour des routes
+On utilise la requête SQL :
+```
+CREATE TABLE haie_route20_coupe AS (
+    SELECT ST_Intersection(h.geom, ST_Buffer(r.geom, 20))
+    FROM haie AS h, cd50
+)
+```
+
 ### Découpage des routes en segments de 5 mètres
 La première étape consiste à diviser l’ensemble du réseau de routes départementales du département de la Manche en segments de 5 mètres. Ce découpage permet d’analyser précisément la présence ou l’absence de haies sur de très courtes distances, garantissant ainsi une meilleure finesse d’interprétation des résultats. Cette étape est effectuée avec la fonction ***Division des lignes par longueur maximale*** de QGIS en choisissant 5 mètres pour longueur et la couche des routes départementales en entrée.
 
@@ -14,14 +23,28 @@ Autour de chaque segment de 5 mètres, une zone tampon d’un rayon de 20 mètre
 ```
 CREATE TABLE buffer_haie AS (
     SELECT (ST_Dump(ST_Difference(ST_Buffer(r1.geom, 20), r2.geom))).geom AS geom
-    FROM cd50_coupe100 r1
-    JOIN cd50_coupe100 r2 ON ST_Intersects(ST_Buffer(r1.geom, 20), r2.geom)
+    FROM cd50_coupe5m r1
+    JOIN cd50_coupe5m r2 ON ST_Intersects(ST_Buffer(r1.geom, 20), r2.geom)
 );
 ```
-et à la fonction ***Couper avec des lignes*** de QGIS avec les zones tampon en couche source et les routes départementales non découpées en couche de découpage.
 
+### Scission de la zone tampon en deux moitiés
+Afin de pouvoir distinguer de quel côté de la route la haie est présente ou absente, chaque zone tampon est scindée en deux parties distinctes en prenant la route départementale comme axe de séparation. Cette opération permet d’analyser indépendamment chaque bord de route et d’identifier précisément les sections où une haie est manquante sur un côté seulement. On utilise la fonction ***Couper avec des lignes*** de QGIS avec les zones tampon en couche source et les routes départementales non découpées en couche de découpage, ce qui nous donne la table ***segment_buffer***.
 
-
+### Suppression des segments de zones tampons intersectés par une haie
+Enfin, pour isoler uniquement les zones où les haies sont absentes, tous les segments de zones tampons qui intersectent une haie sont supprimés. Cela signifie que seules les sections de route dépourvues de haies, sur l’un ou l’autre des côtés, sont conservées pour l’analyse finale. Cette étape a été réalisée grâce aux requêtes SQL suivantes :
+```
+CREATE TABLE segment_trou AS (
+    SELECT b.*
+    FROM segment_buffer b
+    WHERE NOT EXISTS (
+        SELECT 1 
+        FROM haie_route20_coupe h
+        WHERE ST_DWithin(b.geom, h.geom, 0.1) -- Réduit le nombre de tests
+        AND ST_Intersects(b.geom, h.geom) -- Vérifie l'intersection réelle
+    )
+);
+```
 
 
 
