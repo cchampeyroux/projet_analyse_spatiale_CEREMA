@@ -155,6 +155,8 @@ Celui-ci prend en entrée le dossier contenant toutes les dalles de MNT au forma
 
 Les données utilisées durant ce projet ont été récupérées sur le site de [Géoservices](https://geoservices.ign.fr/rgealti).
 
+Ce programme peut tourner pendant plusieurs heures, 3 dans les conditions de travail du projet.
+
 ### Attribution d'un indicateur d'importance aux trous de la couche des discontinuités
 
 Cette dernière étape est effectuée par le code **`classif_trous_ruissellement.py`**, qui prend en entrée :
@@ -163,6 +165,7 @@ Cette dernière étape est effectuée par le code **`classif_trous_ruissellement
 
 Il crée alors un fichier au format Shapefile contenant pour chaque discontinuité son identifiant et la valeur d'accumulation la plus haute qu'elle intersecte, arrondie à la dixaine inférieure.
 
+Ce traitement se fait enn environ 10 minutes.
 
 ## 4. Identification des zones prioritaires pour la plantation de haies avec les critères écologiques et hydrologiques
 
