@@ -42,14 +42,14 @@ CREATE TABLE buffer_haie AS (
 ### Scission de la zone tampon en deux moitiés
 Afin de pouvoir distinguer de quel côté de la route la haie est présente ou absente, chaque zone tampon est scindée en deux parties distinctes en prenant la route départementale comme axe de séparation. On utilise les requêtes :
 ```
-CREATE TABLE temp_split_2 AS 
+CREATE TABLE segment_buffer_temp AS 
 	SELECT ST_Split(b.geom, ST_Intersection(r.geom, ST_Buffer(b.geom, 50))) AS geom
-	FROM trou_5m_sans_route_et_parcelle_regroupe_dump b
-	JOIN cd_50_union r 
+	FROM buffer_haie b
+	JOIN route_cd_50 r 
 	ON ST_Intersects(b.geom, r.geom);
 
-CREATE TABLE trou_5m_sans_route_et_parcelle_regroupe_split_final AS 
-	SELECT (ST_Dump(geom)).geom FROM temp_split_2;
+CREATE TABLE segment_buffer_temp AS 
+	SELECT (ST_Dump(geom)).geom FROM segment_buffer;
 ```
 ce qui nous donne la table ***segment_buffer***.
 
