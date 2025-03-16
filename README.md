@@ -40,7 +40,18 @@ CREATE TABLE buffer_haie AS (
 ```
 
 ### Scission de la zone tampon en deux moitiés
-Afin de pouvoir distinguer de quel côté de la route la haie est présente ou absente, chaque zone tampon est scindée en deux parties distinctes en prenant la route départementale comme axe de séparation. On utilise la fonction **`Couper avec des lignes`** de QGIS avec les **zones tampon** en couche **source** et les **routes départementales** non découpées en **couche de découpage**, ce qui nous donne la table ***segment_buffer***.
+Afin de pouvoir distinguer de quel côté de la route la haie est présente ou absente, chaque zone tampon est scindée en deux parties distinctes en prenant la route départementale comme axe de séparation. On utilise les requêtes :
+```
+CREATE TABLE temp_split_2 AS 
+	SELECT ST_Split(b.geom, ST_Intersection(r.geom, ST_Buffer(b.geom, 50))) AS geom
+	FROM trou_5m_sans_route_et_parcelle_regroupe_dump b
+	JOIN cd_50_union r 
+	ON ST_Intersects(b.geom, r.geom);
+
+CREATE TABLE trou_5m_sans_route_et_parcelle_regroupe_split_final AS 
+	SELECT (ST_Dump(geom)).geom FROM temp_split_2;
+```
+ce qui nous donne la table ***segment_buffer***.
 
 ### Suppression des segments de zones tampons intersectés par une haie
 Enfin, pour isoler uniquement les zones où les haies sont absentes, tous les segments de zones tampons qui intersectent une haie sont supprimés. Cela signifie que seules les sections de route dépourvues de haies, sur l’un ou l’autre des côtés, sont conservées pour l’analyse finale. Cette étape a été réalisée grâce aux requêtes SQL suivantes :
