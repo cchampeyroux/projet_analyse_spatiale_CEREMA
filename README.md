@@ -51,7 +51,7 @@ CREATE TABLE segment_buffer_temp AS
 CREATE TABLE segment_buffer_temp AS 
 	SELECT (ST_Dump(geom)).geom FROM segment_buffer;
 ```
-ce qui nous donne la table ***segment_buffer***.
+ce qui nous donne la table ***segment_buffer***. Cette étape prend une quarantaine de minutes et pèse envirion 15 Go.
 
 ### Suppression des segments de zones tampons intersectés par une haie
 Enfin, pour isoler uniquement les zones où les haies sont absentes, tous les segments de zones tampons qui intersectent une haie sont supprimés. Cela signifie que seules les sections de route dépourvues de haies, sur l’un ou l’autre des côtés, sont conservées pour l’analyse finale. Cette étape a été réalisée grâce aux requêtes SQL suivantes :
